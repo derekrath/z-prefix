@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+  db:
+    image: 'postgres:latest'
+    container_name: db
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: docker
+      POSTGRES_DB: postgres
+    # # not sure if this is working yet... wont need for production though
+    volumes:
+      - ./server/database:/var/lib/postgresql/data
+    networks:
+      - appnetwork
+  
+  server:
+    build: ./server
+    container_name: server
+    # volumes:
+      # - ./server:/server
+      # - /usr/src/app/node_modules
+    ports: 
+      - '3001:3000'
+    environment:
+      DB_CONNECTION_STRING: postgres://postgres:docker@db:5432/postgres
+    networks:
+      - appnetwork
+    depends_on:
+      - db
+
+  ui:
+    build: ./ui
+    container_name: ui
+    volumes:
+      - ./ui:/src/app
+    ports: 
+      - '3000:3000'
+    depends_on:
+      - server
+  
+networks:
+  appnetwork:
+    driver: bridge
