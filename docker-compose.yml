@@ -23,7 +23,7 @@ services:
       # - ./server:/server
       # - /usr/src/app/node_modules
     ports: 
-      - '3001:3000'
+      - '3001:3001'
     environment:
       DB_CONNECTION_STRING: postgres://postgres:docker@db:5432/postgres
     networks:
