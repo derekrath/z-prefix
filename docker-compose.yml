@@ -10,20 +10,10 @@ services:
     ports:
       - '5432:5432'
     env_file:
-     - ./.env
+     - ./server/.env
     environment:
-      # DATABASE_HOST: 27.0.0.1
-      # DATABASE_HOST: 172.27.0.2
-      # 192.168.0.2
-      # PGUSER: user
-      # PG_USER: user
       POSTGRES_USER: postgres
-      # PGPASSWORD: password
-      # PG_PASSWORD: password
       POSTGRES_PASSWORD: docker
-      # PGPORT: 5432
-      # PGDATABASE: db
-      # POSTGRES_DATABASE: db
       POSTGRES_DB: postgres
       # hide these in the .env file
     # # not sure if this is working yet... wont need for production though
@@ -40,25 +30,14 @@ services:
     volumes:
       - ./server:/server
       # - /usr/src/app/node_modules
-    ports: 
-      # - '3001:3000' #I think use this one? research
-      # it maps port 8080 on the host to the exposed 8080 port on the container.
+    ports:
       - '8080:8080'
     env_file:
-     - ./.env
-    environment:
-      # NODE_ENV: development
-      # DATABASE_HOST=: 27.0.0.1; 
-      # POSTGRES_USER: postgres
-      # POSTGRES_PASSWORD: docker
-      # POSTGRES_PORT: 5432
-      # POSTGRES_DB: postgres
-      DB_CONNECTION_STRING: postgres://postgres:docker@db:5432/postgres
-      # DB_CONNECTION_STRING: postgres://postgres:docker@localhost/postgres
-      # PORT: 8080
-      # NODE_ENV: 'development'
+     - ./server/.env
+    # environment:
       # DATABASE_URL: postgres://postgres:docker@db:5432/postgres
-      # DATABASE_URL: 'postgres://$${process.env.POSTGRES_USER}:$${process.env.POSTGRES_PASSWORD}@$${process.env.POSTGRES_HOST}:$${process.env.POSTGRES_PORT}/$${process.env.POSTGRES_DB}'
+    # also a common variable:
+      # DB_CONNECTION_STRING: postgres://postgres:docker@db:5432/postgres
     networks:
       - appnetwork
     depends_on:
@@ -68,12 +47,14 @@ services:
     build: ./ui
     # image: ui
     container_name: ui
-    environment:
-      - FAST_REFRESH=false
+    # environment:
+    #   - FAST_REFRESH=false
     volumes:
       - ./ui:/src/app
     ports: 
       - '3000:3000'
+    env_file:
+      - ./ui/.env
     depends_on:
       - server
   
