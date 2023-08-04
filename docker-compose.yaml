@@ -3,22 +3,22 @@
 version: '3'
 
 services:
-  # db:
-  #   image: 'postgres:latest'
-  #   # image: 'postgres:14.1'
-  #   restart: always
-  #   container_name: db
-  #   ports:
-  #     - '5432:5432'
-  #   env_file:
-  #    - ./server/.env
-  #   environment:
-  #     POSTGRES_USER: postgres
-  #     POSTGRES_PASSWORD: docker
-  #     POSTGRES_DB: postgres
-  #     # hide these in the .env file in the server directory?
-  #   networks:
-  #     - appnetwork
+  db:
+    image: 'postgres:latest'
+    # image: 'postgres:14.1'
+    restart: always
+    container_name: db
+    ports:
+      - '5432:5432'
+    env_file:
+     - ./server/.env
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: docker
+      POSTGRES_DB: postgres
+      # hide these in the .env file in the server directory?
+    networks:
+      - appnetwork
   
   server:
     # image: server
@@ -35,10 +35,10 @@ services:
       # DATABASE_URL: postgres://postgres:docker@db:5432/postgres
     # also a common variable:
       # DB_CONNECTION_STRING: postgres://postgres:docker@db:5432/postgres
-    # networks:
-    #   - appnetwork
-    # depends_on:
-    #   - db
+    networks:
+      - appnetwork
+    depends_on:
+      - db
 
   ui:
     build: ./ui
@@ -55,6 +55,6 @@ services:
     depends_on:
       - server
   
-# networks:
-#   appnetwork:
-#     driver: bridge
+networks:
+  appnetwork:
+    driver: bridge
