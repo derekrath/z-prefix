@@ -65,3 +65,7 @@ If you use the migrations key in docker-compose.yml then you might be migrating 
 
 Had to add to db docker-compose.yaml     command: postgres -c stats_temp_directory=/tmp
 
+
+
+For dev, make sure to add nodemon back into the Dockerfile and package.json start:server script.
+For dev, the DATABASE_URL is located in the .env file. It will be overridden in production.

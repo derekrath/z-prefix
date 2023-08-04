@@ -1,0 +1,1 @@
+    "build": "export REACT_APP_NODE_ENV=$NODE_ENV && react-scripts build",
